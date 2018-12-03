@@ -72,8 +72,7 @@ export default class MovableView extends Component {
   render() {
     return (
       <Animated.View
-        {...this.panResponder.panHandlers}
-        style={[this.props.style]}
+        style={[this.props.style, this.state.pan.getLayout()]}
       >
         {this.props.children}
       </Animated.View>
