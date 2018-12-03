@@ -29,6 +29,28 @@ export default class MovableView extends Component {
         const yOffset = this.state.yOffset + gestureState.dy;
         this.setState({ xOffset , yOffset });
         this.props.onDragEnd();
+
+        if(this.props.snapPoints != null) {
+            let x = gestureState.dx
+            let y = gestureState.dy
+            let closest = this.props.snapPoints.reduce(function(prev, curr) {
+
+                let pa = x - prev.x;
+                let pb = y - prev.y;
+                let prevDist = Math.sqrt( pa*pa + pb*pb );
+
+                let ca = x - curr.x;
+                let cb = y - curr.y;
+                let currDist = Math.sqrt( ca*ca + cb*cb );
+
+                return (currDist < prevDist ? curr : prev);
+          });
+
+          Animated.event([null, {
+              dx: closest.x,
+              dy: closest.y,
+          }])
+        }
       }
     });
   }
@@ -63,6 +85,7 @@ MovableView.propTypes = {
   onDragEnd: PropTypes.func,
   onMove: PropTypes.func,
   disabled: PropTypes.bool,
+  snapPoints: PropTypes.array
 };
 
 MovableView.defaultProps = {
