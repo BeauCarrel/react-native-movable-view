@@ -46,6 +46,7 @@ export default class MovableView extends Component {
                 return (currDist < prevDist ? curr : prev);
           });
 
+          console.log("Snapping to: ", closest)
           Animated.event([null, {
               dx: closest.x,
               dy: closest.y,
